@@ -3,15 +3,18 @@
 <head>
   <title>Hunsa Noah - Web Developer</title>
   <style>
-    body { 
-      background-color: #f0f9ff; 
-      font-family: Arial; 
-      text-align: center; 
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background-color: #f0f9ff;
+      font-family: Arial;
+      text-align: center;
       padding: 40px;
       margin: 0;
       transition: background 0.3s;
     }
-    .card {
+   .card {
       background: white;
       padding: 30px;
       border-radius: 10px;
@@ -23,9 +26,9 @@
     }
     h1 { color: #1e40af; margin-top: 0; }
     h2 { color: #2563eb; }
-    button, a { 
-      display: inline-block; 
-      margin: 10px; 
+    button, a {
+      display: inline-block;
+      margin: 10px;
       padding: 10px 20px;
       background: #2563eb;
       color: white;
@@ -38,59 +41,97 @@
     button:hover, a:hover {
       background: #1e40af;
     }
-    
+
     /* Projects Section */
-    .projects {
+   .projects {
       max-width: 1000px;
       margin: 40px auto;
     }
-    .project-grid {
+   .project-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
       margin-top: 20px;
     }
-    .project-card {
+   .project-card {
       background: white;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
       transition: transform 0.2s;
     }
-    .project-card:hover {
+   .project-card:hover {
       transform: translateY(-5px);
     }
-    .project-card img {
+   .project-card img {
       width: 100%;
       height: 150px;
       object-fit: cover;
       border-radius: 5px;
-      background: #e5e7eb;
     }
-    .project-card h3 {
+   .project-card h3 {
       color: #1e40af;
       margin: 15px 0 10px 0;
     }
-    
+
+    /* Contact Form */
+   .contact {
+      max-width: 600px;
+      margin: 60px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: background 0.3s;
+    }
+   .contact input,.contact textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #d1d5db;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-family: Arial;
+      font-size: 16px;
+    }
+   .contact textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+   .contact button {
+      width: 100%;
+      margin: 10px 0 0 0;
+    }
+    #formMessage {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #059669;
+    }
+
     /* Footer */
     footer {
       margin-top: 60px;
       color: #6b7280;
       font-size: 14px;
     }
-    
+
     /* Dark mode */
-    .dark-mode {
-      background-color: #111827 !important;
+   .dark-mode {
+      background-color: #111827!important;
     }
-    .dark-mode .card, .dark-mode .project-card {
+   .dark-mode.card,.dark-mode.project-card,.dark-mode.contact {
       background: #1f2937;
       color: white;
     }
-    .dark-mode h1, .dark-mode h2, .dark-mode h3 {
+   .dark-mode h1,.dark-mode h2,.dark-mode h3 {
       color: #60a5fa;
     }
-    .dark-mode footer {
+   .dark-mode.contact input,.dark-mode.contact textarea {
+      background: #374151;
+      border-color: #4b5563;
+      color: white;
+    }
+   .dark-mode footer {
       color: #9ca3af;
     }
   </style>
@@ -99,14 +140,15 @@
   <div class="card">
     <h1>HUNSA NOAH</h1>
     <h2>Aspiring Web Developer from Lagos, Nigeria NG</h2>
-    <p><strong>Day 4:</strong> Today I add Projects. My portfolio don serious!</p>
+    <p><strong>Day 5:</strong> Today I add Contact Form. Clients fit reach me now!</p>
     <p>I dey learn HTML, CSS, Git, JavaScript. E go get better.</p>
-    
+
     <h3>My Skills:</h3>
-    <p>✅ HTML ✅ CSS ✅ JavaScript ✅ VS Code ✅ Git ✅ GitHub</p>
-    
+    <p>✅ HTML ✅ CSS ✅ JavaScript ✅ GitHub ✅ Form Validation</p>
+
     <a href="https://wa.me/2347083638220" target="_blank">Chat Me on WhatsApp</a>
     <a href="mailto:hunsanoah81@gmail.com">Send Email</a>
+    <a href="#contact">Contact Me</a>
     <br>
     <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
     <button onclick="greetVisitor()">Click Me</button>
@@ -121,19 +163,32 @@
         <h3>Lagos Weather App</h3>
         <p>Check Lagos weather with JavaScript API. Never get caught by rain again.</p>
       </div>
-      
+
       <div class="project-card">
         <img src="https://placehold.co/400x200/1e40af/ffffff?text=Naira+Calculator" alt="Project 2">
         <h3>Naira Calculator</h3>
         <p>Convert USD to Naira. Calculate your japa budget with live rates.</p>
       </div>
-      
+
       <div class="project-card">
         <img src="https://placehold.co/400x200/1d4ed8/ffffff?text=Todo+List" alt="Project 3">
         <h3>Todo List App</h3>
         <p>Track your daily coding tasks. "Network fit stress me" no go stop you.</p>
       </div>
     </div>
+  </div>
+
+  <!-- CONTACT FORM -->
+  <div class="contact" id="contact">
+    <h2>Contact Me</h2>
+    <p>Have a project? Want to hire me? Send message.</p>
+    <form onsubmit="sendMessage(event)">
+      <input type="text" id="name" placeholder="Your Name" required>
+      <input type="email" id="email" placeholder="Your Email" required>
+      <textarea id="message" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+    <p id="formMessage"></p>
   </div>
 
   <footer>
@@ -144,9 +199,32 @@
     function toggleDarkMode() {
       document.body.classList.toggle('dark-mode');
     }
-    
+
     function greetVisitor() {
       alert('Welcome to Hunsa Noah Portfolio! Network fit stress me, but I no go gree 🇳🇬');
+    }
+
+    function sendMessage(event) {
+      event.preventDefault(); // Stop page from refresh
+
+      let name = document.getElementById('name').value;
+      let email = document.getElementById('email').value;
+      let message = document.getElementById('message').value;
+
+      if(name === '' || email === '' || message === '') {
+        document.getElementById('formMessage').innerText = 'Oga, fill all fields first 😅';
+        document.getElementById('formMessage').style.color = '#dc2626';
+        return;
+      }
+
+      // For now we just show success. Day 6 we go connect real email.
+      document.getElementById('formMessage').innerText = 'Thanks ' + name + '! Message received. I go reply ASAP 🇳🇬';
+      document.getElementById('formMessage').style.color = '#059669';
+
+      // Clear form
+      document.getElementById('name').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('message').value = '';
     }
   </script>
 </body>
