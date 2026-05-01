@@ -8,6 +8,7 @@
       font-family: Arial; 
       text-align: center; 
       padding: 40px;
+      transition: background 0.3s;
     }
     .card {
       background: white;
@@ -16,17 +17,35 @@
       max-width: 600px;
       margin: auto;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: background 0.3s;
     }
     h1 { color: #1e40af; }
     h2 { color: #2563eb; }
-    a { 
+    button, a { 
       display: inline-block; 
       margin: 10px; 
       padding: 10px 20px;
       background: #2563eb;
       color: white;
       text-decoration: none;
+      border: none;
       border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover, a:hover {
+      background: #1e40af;
+    }
+    /* Dark mode styles */
+    .dark-mode {
+      background-color: #111827 !important;
+    }
+    .dark-mode .card {
+      background: #1f2937;
+      color: white;
+    }
+    .dark-mode h1, .dark-mode h2 {
+      color: #60a5fa;
     }
   </style>
 </head>
@@ -34,14 +53,27 @@
   <div class="card">
     <h1>HUNSA NOAH</h1>
     <h2>Aspiring Web Developer from Lagos, Nigeria NG</h2>
-    <p><strong>Day 1:</strong> Network fit stress me, but I no go gree</p>
-    <p>I dey learn HTML, CSS, Git. Today na Day 1. E go get better.</p>
+    <p><strong>Day 3:</strong> Today I add JavaScript. My site dey alive!</p>
+    <p>I dey learn HTML, CSS, Git, JavaScript. E go get better.</p>
     
     <h3>My Skills:</h3>
-    <p>✅ HTML ✅ VS Code ✅ Git ✅ Chrome DevTools</p>
+    <p>✅ HTML ✅ CSS ✅ VS Code ✅ Git ✅ JavaScript</p>
     
-    <a href="https://wa.me/2347083638220">Chat Me on WhatsApp</a>
+    <a href="https://wa.me/2347083638220" target="_blank">Chat Me on WhatsApp</a>
     <a href="mailto:hunsanoah81@gmail.com">Send Email</a>
+    <br>
+    <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+    <button onclick="greetVisitor()">Click Me</button>
   </div>
+
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+    
+    function greetVisitor() {
+      alert('Welcome to Hunsa Noah Portfolio! Network fit stress me, but I no go gree 🇳🇬');
+    }
+  </script>
 </body>
 </html>
