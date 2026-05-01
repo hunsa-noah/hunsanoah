@@ -4,85 +4,62 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lagos Weather App - Hunsa Noah</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: linear-gradient(135deg, #1e40af, #3b82f6);
-      font-family: 'Segoe UI', Arial, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      color: white;
-    }
-    .weather-card {
-      background: rgba(255,255,255,0.15);
-      padding: 30px;
-      border-radius: 20px;
-      max-width: 450px;
-      width: 100%;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-      text-align: center;
-    }
-    h1 { margin-bottom: 10px; font-size: 28px; }
-    .tagline { opacity: 0.8; margin-bottom: 25px; font-size: 14px; }
-    input {
-      width: 100%;
-      padding: 15px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      margin-bottom: 15px;
-      background: rgba(255,255,255,0.9);
-    }
-    .btn-group {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    button {
-      flex: 1;
-      padding: 15px;
-      background: #f59e0b;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
-    }
-    button:hover { background: #d97706; }
-    button:last-child { background: #10b981; }
-    button:last-child:hover { background: #059669; }
-    #weatherResult { margin-top: 20px; min-height: 250px; }
-    #weatherIcon { width: 120px; height: 120px; }
-    .temp { font-size: 48px; font-weight: bold; margin: 10px 0; }
-    .desc { font-size: 20px; text-transform: capitalize; margin-bottom: 15px; }
-    .details { 
-      display: grid; 
-      grid-template-columns: 1fr 1fr; 
-      gap: 15px; 
-      margin: 20px 0;
-      font-size: 14px;
-    }
-    .advice {
-      background: rgba(0,0,0,0.2);
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-    .back-link {
-      color: #fbbf24;
-      text-decoration: none;
-      display: inline-block;
-      margin-top: 20px;
-      font-weight: bold;
-    }
-    .loading { opacity: 0.7; }
-  </style>
+  .forecast-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 15px 0;
+  overflow-x: auto;
+}
+.forecast-day {
+  background: rgba(0,0,0,0.2);
+  padding: 10px;
+  border-radius: 10px;
+  min-width: 70px;
+  text-align: center;
+  font-size: 12px;
+}
+.forecast-day p { margin: 5px 0; }
+.badge {
+  background: #10b981;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: bold;
+}
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.tech-stack {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 15px 0;
+}
+.tech-stack span {
+  background: rgba(59, 130, 246, 0.2);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+.project-links {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+.btn-primary, .btn-secondary {
+  padding: 10px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+}
+.btn-primary { background: #f59e0b; color: white; }
+.btn-secondary { background: transparent; border: 2px solid #f59e0b; color: #f59e0b; }
 </head>
 <body>
   <div class="weather-card">
@@ -104,88 +81,125 @@
   </div>
 
   <script>
-    const API_KEY = '4428b7a8371afa1670d0a38a30931618';
+  const API_KEY = '4428b7a8371afa1670d0a38a30931618';
+  
+  async function getWeather() {
+    const city = document.getElementById('cityInput').value;
+    const resultDiv = document.getElementById('weatherResult');
     
-    async function getWeather() {
-      const city = document.getElementById('cityInput').value;
-      const resultDiv = document.getElementById('weatherResult');
-      
-      if (!city) {
-        resultDiv.innerHTML = '<p>Abeg enter city name first 😅</p>';
-        return;
-      }
-      
-      resultDiv.innerHTML = '<p class="loading">Fetching weather... 🌍</p>';
-      
-      try {
-        const response = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
-        );
-        
-        if (!response.ok) throw new Error('City not found');
-        
-        const data = await response.json();
-        displayWeather(data);
-        
-      } catch (error) {
-        resultDiv.innerHTML = `<p>❌ ${error.message}<br>Try "Lagos" or check spelling</p>`;
-      }
+    if (!city) {
+      resultDiv.innerHTML = '<p>Abeg enter city name first 😅</p>';
+      return;
     }
     
-    function displayWeather(data) {
-      const temp = Math.round(data.main.temp);
-      const feelsLike = Math.round(data.main.feels_like);
-      const description = data.weather[0].description;
-      const icon = data.weather[0].icon;
-      const humidity = data.main.humidity;
-      const wind = data.wind.speed;
-      const cityName = data.name;
-      const weatherMain = data.weather[0].main;
+    resultDiv.innerHTML = '<p class="loading">Fetching weather... 🌍</p>';
+    
+    try {
+      // Get current weather
+      const currentResponse = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
+      );
+      if (!currentResponse.ok) throw new Error('City not found');
+      const currentData = await currentResponse.json();
       
-      let advice = '';
-      if (temp > 32) advice = '🔥 Hot! Drink plenty water. Heat go stress network pass you.';
-      else if (weatherMain === 'Rain') advice = '🌧️ Rain dey! Carry umbrella before Lagos show you shege.';
-      else if (temp < 20) advice = '❄️ Cold small. Wear sweater like you dey London.';
-      else advice = '😎 Weather good! Perfect time to code or bill client.';
+      // Get 5-day forecast
+      const forecastResponse = await fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
+      );
+      const forecastData = await forecastResponse.json();
       
-      document.getElementById('weatherResult').innerHTML = `
-        <h2>${cityName}</h2>
-        <img id="weatherIcon" src="https://openweathermap.org/img/wn/${icon}@4x.png" alt="weather">
-        <div class="temp">${temp}°C</div>
-        <div class="desc">${description}</div>
-        <div class="details">
-          <div>Feels like<br><strong>${feelsLike}°C</strong></div>
-          <div>Humidity<br><strong>${humidity}%</strong></div>
-          <div>Wind<br><strong>${wind} m/s</strong></div>
-          <div>Condition<br><strong>${weatherMain}</strong></div>
+      displayWeather(currentData, forecastData);
+      
+    } catch (error) {
+      resultDiv.innerHTML = `<p>❌ ${error.message}<br>Try "Lagos" or check spelling</p>`;
+    }
+  }
+  
+  function displayWeather(current, forecast) {
+    const temp = Math.round(current.main.temp);
+    const feelsLike = Math.round(current.main.feels_like);
+    const description = current.weather[0].description;
+    const icon = current.weather[0].icon;
+    const humidity = current.main.humidity;
+    const wind = current.wind.speed;
+    const cityName = current.name;
+    const weatherMain = current.weather[0].main;
+    
+    // Get next 5 days forecast - 12:00 PM each day
+    const dailyForecast = forecast.list.filter(item => item.dt_txt.includes('12:00:00')).slice(0, 5);
+    
+    let forecastHTML = '';
+    dailyForecast.forEach(day => {
+      const date = new Date(day.dt * 1000);
+      const dayName = date.toLocaleDateString('en', { weekday: 'short' });
+      const dayTemp = Math.round(day.main.temp);
+      const dayIcon = day.weather[0].icon;
+      
+      forecastHTML += `
+        <div class="forecast-day">
+          <p>${dayName}</p>
+          <img src="https://openweathermap.org/img/wn/${dayIcon}.png" width="50">
+          <p><strong>${dayTemp}°C</strong></p>
         </div>
-        <div class="advice">${advice}</div>
       `;
-    }
+    });
     
-    function getLocationWeather() {
-      if (navigator.geolocation) {
-        document.getElementById('weatherResult').innerHTML = '<p class="loading">Getting your location... 📍</p>';
-        navigator.geolocation.getCurrentPosition(async (position) => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          try {
-            const response = await fetch(
-              `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
-            );
-            const data = await response.json();
-            displayWeather(data);
-          } catch (error) {
-            document.getElementById('weatherResult').innerHTML = '<p>Location error. Type city manually.</p>';
-          }
-        });
-      } else {
-        alert('Browser no support location. Type city name.');
-      }
-    }
+    let advice = '';
+    if (temp > 32) advice = '🔥 Hot! Drink plenty water. Heat go stress network pass you.';
+    else if (weatherMain === 'Rain') advice = '🌧️ Rain dey! Carry umbrella before Lagos show you shege.';
+    else if (temp < 20) advice = '❄️ Cold small. Wear sweater like you dey London.';
+    else advice = '😎 Weather good! Perfect time to code or bill client.';
     
-    // Load Lagos weather on page start
-    getWeather();
-  </script>
+    document.getElementById('weatherResult').innerHTML = `
+      <h2>${cityName}</h2>
+      <img id="weatherIcon" src="https://openweathermap.org/img/wn/${icon}@4x.png" alt="weather">
+      <div class="temp">${temp}°C</div>
+      <div class="desc">${description}</div>
+      <div class="details">
+        <div>Feels like<br><strong>${feelsLike}°C</strong></div>
+        <div>Humidity<br><strong>${humidity}%</strong></div>
+        <div>Wind<br><strong>${wind} m/s</strong></div>
+        <div>Condition<br><strong>${weatherMain}</strong></div>
+      </div>
+      
+      <h3 style="margin-top: 25px;">5-Day Forecast</h3>
+      <div class="forecast-container">
+        ${forecastHTML}
+      </div>
+      
+      <div class="advice">${advice}</div>
+    `;
+  }
+  
+  function getLocationWeather() {
+    if (navigator.geolocation) {
+      document.getElementById('weatherResult').innerHTML = '<p class="loading">Getting your location... 📍</p>';
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        try {
+          const currentResponse = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+          );
+          const currentData = await currentResponse.json();
+          
+          const forecastResponse = await fetch(
+            `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+          );
+          const forecastData = await forecastResponse.json();
+          
+          displayWeather(currentData, forecastData);
+        } catch (error) {
+          document.getElementById('weatherResult').innerHTML = '<p>Location error. Type city manually.</p>';
+        }
+      });
+    } else {
+      alert('Browser no support location. Type city name.');
+    }
+  }
+  
+  // Load Lagos weather on page start
+  getWeather();
+</script>
 </body>
 </html>
